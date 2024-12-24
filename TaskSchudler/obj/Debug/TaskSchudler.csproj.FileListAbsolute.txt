@@ -1,0 +1,14 @@
+C:\Users\ADMIN\source\repos\TaskSchudler\TaskSchudler\bin\Debug\TaskSchudler.exe.config
+C:\Users\ADMIN\source\repos\TaskSchudler\TaskSchudler\bin\Debug\TaskSchudler.exe
+C:\Users\ADMIN\source\repos\TaskSchudler\TaskSchudler\bin\Debug\TaskSchudler.pdb
+C:\Users\ADMIN\source\repos\TaskSchudler\TaskSchudler\obj\Debug\TaskSchudler.csproj.AssemblyReference.cache
+C:\Users\ADMIN\source\repos\TaskSchudler\TaskSchudler\obj\Debug\TaskSchudler.All_Tasks.resources
+C:\Users\ADMIN\source\repos\TaskSchudler\TaskSchudler\obj\Debug\TaskSchudler.Login.resources
+C:\Users\ADMIN\source\repos\TaskSchudler\TaskSchudler\obj\Debug\TaskSchudler.Profile.resources
+C:\Users\ADMIN\source\repos\TaskSchudler\TaskSchudler\obj\Debug\TaskSchudler.Properties.Resources.resources
+C:\Users\ADMIN\source\repos\TaskSchudler\TaskSchudler\obj\Debug\TaskSchudler.Reminders.resources
+C:\Users\ADMIN\source\repos\TaskSchudler\TaskSchudler\obj\Debug\TaskSchudler.csproj.GenerateResource.cache
+C:\Users\ADMIN\source\repos\TaskSchudler\TaskSchudler\obj\Debug\TaskSchudler.csproj.CoreCompileInputs.cache
+C:\Users\ADMIN\source\repos\TaskSchudler\TaskSchudler\obj\Debug\TaskSchudler.exe
+C:\Users\ADMIN\source\repos\TaskSchudler\TaskSchudler\obj\Debug\TaskSchudler.pdb
+C:\Users\ADMIN\source\repos\TaskSchudler\TaskSchudler\obj\Debug\TaskSchudler.Splash.resources
