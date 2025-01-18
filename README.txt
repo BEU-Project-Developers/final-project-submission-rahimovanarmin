@@ -1,2 +1,2 @@
-﻿In this version I improved Add Tasks Form by added delete function
-(NOTE: in previos version i added Edit functionality to Edit buuton in All Tasks page. But just forgot to note :)) )
+﻿In this version I improved Add Tasks Form by changing PasswordInput data show as "*". and changing the apperance of 
+All tasks table and categorize by due date . 

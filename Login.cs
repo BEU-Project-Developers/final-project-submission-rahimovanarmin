@@ -16,6 +16,7 @@ namespace TaskSchudler
         public Login()
         {
             InitializeComponent();
+            PasswordInput.PasswordChar = '•';
         }
         //SqlConnection connection = new SqlConnection(@"Data Source=DESKTOP-LIJ1K35\SQLEXPRESS;Initial Catalog=master;Integrated Security=True");
 

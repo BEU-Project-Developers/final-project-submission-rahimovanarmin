@@ -43,9 +43,31 @@ namespace TaskSchudler
 
         private void ShowTasks()
         {
-            string query = "SELECT * FROM Taskss WHERE UserId = @UserId";
-            var parameters = new Dictionary<string, object> { { "@UserId", _currentUserId } };
-            AlltasksTable.DataSource = _con.GetData(query, parameters);
+           
+            
+                try
+                {
+                string query = "SELECT * FROM Taskss ORDER BY CASE WHEN Status = 'Completed' THEN 1 ELSE 0 END, DueDate";
+                DataTable dt = _con.GetData(query);
+                    AlltasksTable.DataSource = dt;
+
+                    // Hide columns manually
+                    AlltasksTable.Columns["TaskId"].Visible = false;
+                    AlltasksTable.Columns["UserId"].Visible = false;
+                AlltasksTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                AlltasksTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+                AlltasksTable.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+
+
+            }
+
+            catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading tasks: {ex.Message}");
+                }
+            
+
         }
 
         private void AddButton_Click(object sender, EventArgs e)
