@@ -243,5 +243,63 @@ namespace TaskSchudler
                 }
             }
         }
+
+        private void DeleteButton_Click(object sender, EventArgs e)
+        {
+            if (AlltasksTable.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a task to delete.");
+                return;
+            }
+
+            try
+            {
+                // Get the selected row
+                DataGridViewRow selectedRow = AlltasksTable.SelectedRows[0];
+
+                // Ensure TaskId is valid
+                if (selectedRow.Cells["TaskId"].Value == null)
+                {
+                    MessageBox.Show("Invalid task selection.");
+                    return;
+                }
+
+                int taskId = Convert.ToInt32(selectedRow.Cells["TaskId"].Value);
+
+                // Confirm deletion
+                DialogResult result = MessageBox.Show("Are you sure you want to delete this task?",
+                                                      "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.No)
+                {
+                    return;
+                }
+
+                // Delete query
+                string query = "DELETE FROM Taskss WHERE TaskId = @TaskId";
+
+                // Add parameter
+                var parameters = new Dictionary<string, object>
+        {
+            { "@TaskId", taskId }
+        };
+
+                // Execute delete
+                int rowsAffected = _con.SetData(query, parameters);
+
+                if (rowsAffected > 0)
+                {
+                    MessageBox.Show("Task deleted successfully.");
+                    ShowTasks(); // Refresh DataGridView
+                }
+                else
+                {
+                    MessageBox.Show("Delete failed. Task not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
     }
 }
