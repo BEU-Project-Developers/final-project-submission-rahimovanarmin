@@ -7,6 +7,8 @@
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
+
+
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -40,8 +42,8 @@
             this.DeleteButton = new System.Windows.Forms.Button();
             this.Edit = new System.Windows.Forms.Button();
             this.AddButton = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.ImportanceInput = new System.Windows.Forms.ComboBox();
+            this.StatusCombo = new System.Windows.Forms.ComboBox();
+            this.ImportanceCombo = new System.Windows.Forms.ComboBox();
             this.DueDateInput = new System.Windows.Forms.DateTimePicker();
             this.RemiderDateInput = new System.Windows.Forms.DateTimePicker();
             this.taskTitleInput = new System.Windows.Forms.TextBox();
@@ -50,7 +52,6 @@
             this.AllTasksNav = new System.Windows.Forms.Label();
             this.RemindersNav = new System.Windows.Forms.Label();
             this.ProfileNav = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             TaskTitle = new System.Windows.Forms.Label();
             ReminderDate = new System.Windows.Forms.Label();
             DueDAte = new System.Windows.Forms.Label();
@@ -119,15 +120,14 @@
             // AllTasksPanel
             // 
             this.AllTasksPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
-            this.AllTasksPanel.Controls.Add(this.label1);
             this.AllTasksPanel.Controls.Add(this.EscapeButton);
             this.AllTasksPanel.Controls.Add(this.AlltasksTable);
             this.AllTasksPanel.Controls.Add(this.DeleteButton);
             this.AllTasksPanel.Controls.Add(this.Edit);
             this.AllTasksPanel.Controls.Add(this.AddButton);
-            this.AllTasksPanel.Controls.Add(this.comboBox1);
+            this.AllTasksPanel.Controls.Add(this.StatusCombo);
             this.AllTasksPanel.Controls.Add(Status);
-            this.AllTasksPanel.Controls.Add(this.ImportanceInput);
+            this.AllTasksPanel.Controls.Add(this.ImportanceCombo);
             this.AllTasksPanel.Controls.Add(Inportance);
             this.AllTasksPanel.Controls.Add(DueDAte);
             this.AllTasksPanel.Controls.Add(this.DueDateInput);
@@ -139,6 +139,7 @@
             this.AllTasksPanel.Name = "AllTasksPanel";
             this.AllTasksPanel.Size = new System.Drawing.Size(851, 714);
             this.AllTasksPanel.TabIndex = 0;
+            this.AllTasksPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.AllTasksPanel_Paint);
             // 
             // EscapeButton
             // 
@@ -159,9 +160,11 @@
             this.AlltasksTable.Name = "AlltasksTable";
             this.AlltasksTable.RowHeadersWidth = 51;
             this.AlltasksTable.RowTemplate.Height = 24;
-            this.AlltasksTable.Size = new System.Drawing.Size(848, 397);
+            this.AlltasksTable.Size = new System.Drawing.Size(851, 397);
             this.AlltasksTable.TabIndex = 25;
+            this.AlltasksTable.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.AlltasksTable_CellClick);
             this.AlltasksTable.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.AlltasksTable.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.AlltasksTable_CellFormatting);
             // 
             // DeleteButton
             // 
@@ -188,6 +191,7 @@
             this.Edit.TabIndex = 23;
             this.Edit.Text = "Edit";
             this.Edit.UseVisualStyleBackColor = false;
+            this.Edit.Click += new System.EventHandler(this.Edit_Click);
             // 
             // AddButton
             // 
@@ -201,24 +205,33 @@
             this.AddButton.TabIndex = 22;
             this.AddButton.Text = "Add";
             this.AddButton.UseVisualStyleBackColor = false;
+            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
             // 
-            // comboBox1
+            // StatusCombo
             // 
-            this.comboBox1.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(286, 188);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(161, 31);
-            this.comboBox1.TabIndex = 21;
+            this.StatusCombo.Font = new System.Drawing.Font("Century Gothic", 12F);
+            this.StatusCombo.FormattingEnabled = true;
+            this.StatusCombo.Items.AddRange(new object[] {
+            "Completed",
+            "Incompleted",
+            "Pending"});
+            this.StatusCombo.Location = new System.Drawing.Point(286, 188);
+            this.StatusCombo.Name = "StatusCombo";
+            this.StatusCombo.Size = new System.Drawing.Size(161, 31);
+            this.StatusCombo.TabIndex = 21;
             // 
-            // ImportanceInput
+            // ImportanceCombo
             // 
-            this.ImportanceInput.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.ImportanceInput.FormattingEnabled = true;
-            this.ImportanceInput.Location = new System.Drawing.Point(27, 191);
-            this.ImportanceInput.Name = "ImportanceInput";
-            this.ImportanceInput.Size = new System.Drawing.Size(161, 31);
-            this.ImportanceInput.TabIndex = 19;
+            this.ImportanceCombo.Font = new System.Drawing.Font("Century Gothic", 12F);
+            this.ImportanceCombo.FormattingEnabled = true;
+            this.ImportanceCombo.Items.AddRange(new object[] {
+            "Low",
+            "Medium",
+            "High"});
+            this.ImportanceCombo.Location = new System.Drawing.Point(27, 191);
+            this.ImportanceCombo.Name = "ImportanceCombo";
+            this.ImportanceCombo.Size = new System.Drawing.Size(161, 31);
+            this.ImportanceCombo.TabIndex = 19;
             // 
             // DueDateInput
             // 
@@ -304,18 +317,6 @@
             this.ProfileNav.Text = "Profile";
             this.ProfileNav.Click += new System.EventHandler(this.ProfileNav_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.DarkGray;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F);
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(58, 424);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(723, 39);
-            this.label1.TabIndex = 27;
-            this.label1.Text = "Note:The DataGrid is for showing Tasks Table ";
-            // 
             // All_Tasks
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -350,15 +351,16 @@
         private System.Windows.Forms.Label RemindersNav;
         private System.Windows.Forms.Label ProfileNav;
         private System.Windows.Forms.TextBox taskTitleInput;
-        private System.Windows.Forms.ComboBox ImportanceInput;
+        private System.Windows.Forms.ComboBox ImportanceCombo;
         private System.Windows.Forms.DateTimePicker DueDateInput;
         private System.Windows.Forms.DateTimePicker RemiderDateInput;
         private System.Windows.Forms.DataGridView AlltasksTable;
         private System.Windows.Forms.Button DeleteButton;
         private System.Windows.Forms.Button Edit;
         private System.Windows.Forms.Button AddButton;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox StatusCombo;
         private System.Windows.Forms.Label EscapeButton;
-        private System.Windows.Forms.Label label1;
+
+
     }
 }

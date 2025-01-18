@@ -10,32 +10,33 @@ using System.Windows.Forms;
 
 namespace TaskSchudler
 {
-    public partial class Profile : Form
+    public partial class Reminders : Form
     {
-        public Profile()
+        public Reminders()
         {
             InitializeComponent();
         }
 
-        private void RemindersPanel_Paint(object sender, PaintEventArgs e)
+        private void ProfileNav_Click(object sender, EventArgs e)
         {
+           
+                Profile Object = new Profile();
+                Object.Show();
+                this.Close();
+            
 
         }
 
         private void RemindersNav_Click(object sender, EventArgs e)
         {
 
-            Reminders Obj = new Reminders();
-            Obj.Show();
-            this.Close();
         }
 
         private void AllTasksNav_Click(object sender, EventArgs e)
         {
-
-            All_Tasks Obj = new All_Tasks();
-            Obj.Show();
-            this.Close();
+           // All_Tasks Obj = new All_Tasks();
+            //Obj.Show();
+            //this.Close();
         }
 
         private void Logo_Click(object sender, EventArgs e)
@@ -48,19 +49,19 @@ namespace TaskSchudler
 
         }
 
-        private void ProfileNav_Click(object sender, EventArgs e)
+        private void AllTasksPanel_Paint(object sender, PaintEventArgs e)
         {
 
         }
 
-        private void EscapeButtonu_Click(object sender, EventArgs e)
+        private void Reminders_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void rəddolburdangetbuttonu_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
