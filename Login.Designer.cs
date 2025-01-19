@@ -37,6 +37,7 @@
             this.Loginbutton = new System.Windows.Forms.Button();
             this.Logo = new System.Windows.Forms.PictureBox();
             this.EscapeButton = new System.Windows.Forms.Label();
+            this.questiontoSignup = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
             this.SuspendLayout();
             // 
@@ -129,12 +130,25 @@
             this.EscapeButton.Text = "X";
             this.EscapeButton.Click += new System.EventHandler(this.EscapeButton_Click);
             // 
+            // questiontoSignup
+            // 
+            this.questiontoSignup.AutoSize = true;
+            this.questiontoSignup.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.questiontoSignup.ForeColor = System.Drawing.Color.White;
+            this.questiontoSignup.Location = new System.Drawing.Point(390, 597);
+            this.questiontoSignup.Name = "questiontoSignup";
+            this.questiontoSignup.Size = new System.Drawing.Size(295, 23);
+            this.questiontoSignup.TabIndex = 29;
+            this.questiontoSignup.Text = "Don\'t you have an account?";
+            this.questiontoSignup.Click += new System.EventHandler(this.questiontoSignup_Click);
+            // 
             // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
             this.ClientSize = new System.Drawing.Size(1111, 714);
+            this.Controls.Add(this.questiontoSignup);
             this.Controls.Add(this.EscapeButton);
             this.Controls.Add(this.Logo);
             this.Controls.Add(this.Loginbutton);
@@ -164,6 +178,7 @@
         private System.Windows.Forms.Button Loginbutton;
         private System.Windows.Forms.PictureBox Logo;
         private System.Windows.Forms.Label EscapeButton;
+        private System.Windows.Forms.Label questiontoSignup;
     }
 }
 

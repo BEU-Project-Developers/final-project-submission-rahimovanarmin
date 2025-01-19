@@ -18,7 +18,7 @@ namespace TaskSchudler
             InitializeComponent();
             PasswordInput.PasswordChar = '•';
         }
-        //SqlConnection connection = new SqlConnection(@"Data Source=DESKTOP-LIJ1K35\SQLEXPRESS;Initial Catalog=master;Integrated Security=True");
+        
 
         private void Login_Load(object sender, EventArgs e)
         {
@@ -85,6 +85,16 @@ namespace TaskSchudler
         private void EscapeButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void questiontoSignup_Click(object sender, EventArgs e)
+        {
+            
+            
+            SignUP signup = new SignUP();
+            signup.Show();
+            this.Close();
+
         }
     }
 }

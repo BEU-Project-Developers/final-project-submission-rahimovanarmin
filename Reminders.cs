@@ -23,25 +23,25 @@ namespace TaskSchudler
             _userID = userID;
             _connectionString = connectionString;
 
-            // Initialize ProfileRecords
+            
             profileRecords = new ProfileRecords(connectionString, userID);
         }
 
         private void Reminders_Load(object sender, EventArgs e)
         {
-            // Load today's reminders
+          
             LoadTodaysReminders();
         }
 
         private void LoadTodaysReminders()
         {
-            // Get today's reminders from the ProfileRecords
+            
             DataTable remindersTable = profileRecords.GetTodaysReminders();
 
-            // Bind the DataTable to the RemindersTable DataGridView
+          
             RemindersTable.DataSource = remindersTable;
 
-            // Format the DataGridView columns
+            
             RemindersTable.Columns["TaskTitle"].HeaderText = "Task Title";
             RemindersTable.Columns["DueDate"].HeaderText = "Due Date";
             RemindersTable.Columns["Importance"].HeaderText = "Importance";
@@ -49,7 +49,7 @@ namespace TaskSchudler
 
             RemindersTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // Update the label with the count of today's reminders
+          
             int reminderCount = remindersTable.Rows.Count;
             Remindercountmassage.Text = $"You have {reminderCount} reminders today.";
         }
@@ -111,7 +111,7 @@ namespace TaskSchudler
 
                 if (importanceValue != null)
                 {
-                    string importance = importanceValue.ToString(); // Convert it to string
+                    string importance = importanceValue.ToString(); 
 
                     // Set the row color based on the Importance level
                     if (importance == "Low")
@@ -133,7 +133,7 @@ namespace TaskSchudler
                 }
                 else
                 {
-                    // Handle null values gracefully by setting a default background color or any other action
+                    
                     RemindersTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Gray;  // Set a neutral color if null
                 }
             }

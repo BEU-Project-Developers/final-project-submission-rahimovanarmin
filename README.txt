@@ -1,1 +1,1 @@
-﻿In this version I added functionality to Next 7 days table in Profile page
+﻿In this version I added functionality to Reminderstable 

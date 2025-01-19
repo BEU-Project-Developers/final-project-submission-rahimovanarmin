@@ -84,10 +84,10 @@ namespace TaskSchudler
             {
                 DataTable remindersTable = new DataTable();
                 string query = @"
-       SELECT TaskTitle, DueDate, Importance, Status
-FROM Taskss
-WHERE CONVERT(DATE, ReminderDate) = CAST(GETDATE() AS DATE)
-";  // Only today's reminders
+                SELECT TaskTitle, DueDate, Importance, Status
+                FROM Taskss
+                WHERE CONVERT(DATE, ReminderDate) = CAST(GETDATE() AS DATE)
+                ";  // Only today's reminders
 
                 using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
@@ -103,7 +103,9 @@ WHERE CONVERT(DATE, ReminderDate) = CAST(GETDATE() AS DATE)
 
                 return remindersTable;
             }
+          
 
         }
+
     }
 }

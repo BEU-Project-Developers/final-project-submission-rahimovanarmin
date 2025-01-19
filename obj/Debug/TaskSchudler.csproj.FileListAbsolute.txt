@@ -26,3 +26,4 @@ C:\Users\ADMIN\Desktop\TaskSchudler2\TaskSchudler\obj\Debug\TaskSchudler.csproj.
 C:\Users\ADMIN\Desktop\TaskSchudler2\TaskSchudler\obj\Debug\TaskSchudler.csproj.CoreCompileInputs.cache
 C:\Users\ADMIN\Desktop\TaskSchudler2\TaskSchudler\obj\Debug\TaskSchudler.exe
 C:\Users\ADMIN\Desktop\TaskSchudler2\TaskSchudler\obj\Debug\TaskSchudler.pdb
+C:\Users\ADMIN\Desktop\TaskSchudler2\TaskSchudler\obj\Debug\TaskSchudler.SignUP.resources

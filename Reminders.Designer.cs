@@ -127,6 +127,8 @@
             // 
             // RemindersTable
             // 
+            this.RemindersTable.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
+            this.RemindersTable.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.RemindersTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.RemindersTable.Location = new System.Drawing.Point(35, 156);
             this.RemindersTable.Name = "RemindersTable";

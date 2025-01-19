@@ -16,7 +16,7 @@ namespace TaskSchudler
     public partial class All_Tasks : Form
     {
         private readonly TaskRecords _con;
-        private readonly int _currentUserId; // Assume this is set during user login.
+        private readonly int _currentUserId; 
         private readonly string connectionString = @"Data Source=DESKTOP-LIJ1K35\SQLEXPRESS;Initial Catalog=TaskScheduler;Integrated Security=True";
 
         public All_Tasks(int userId)
@@ -28,10 +28,9 @@ namespace TaskSchudler
         }
         private void ConfigureDataGridView()
         {
-            // Make TaskTitle, ReminderDate, DueDate, Status, and Importance editable
             foreach (DataGridViewColumn column in AlltasksTable.Columns)
             {
-                if (column.Name == "TaskId") // Primary Key should remain non-editable
+                if (column.Name == "TaskId") 
                 {
                     column.ReadOnly = true;
                 }
@@ -146,7 +145,7 @@ namespace TaskSchudler
 
                 try
                 {
-                    // Get the selected row
+                  
                     DataGridViewRow selectedRow = AlltasksTable.SelectedRows[0];
 
                     // Ensure TaskId is not null
@@ -164,7 +163,7 @@ namespace TaskSchudler
                     string status = StatusCombo.SelectedItem?.ToString() ?? "";
                     string importance = ImportanceCombo.SelectedItem?.ToString() ?? "";
 
-                    // Ensure required fields are filled
+                    // required fields are filled
                     if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(status) || string.IsNullOrWhiteSpace(importance))
                     {
                         MessageBox.Show("Please fill in all fields.");
@@ -212,13 +211,13 @@ namespace TaskSchudler
 
         private void AlltasksTable_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Check if the clicked row index is valid (i.e., a row was clicked)
+            
             if (e.RowIndex >= 0)
             {
-                // Get the selected row
+               
                 DataGridViewRow selectedRow = AlltasksTable.Rows[e.RowIndex];
 
-                // Populate input fields with values from the selected row
+               
                 taskTitleInput.Text = selectedRow.Cells["TaskTitle"].Value.ToString();
                 RemiderDateInput.Value = Convert.ToDateTime(selectedRow.Cells["ReminderDate"].Value);
                 DueDateInput.Value = Convert.ToDateTime(selectedRow.Cells["DueDate"].Value);
@@ -239,9 +238,8 @@ namespace TaskSchudler
 
                 if (importanceValue != null)
                 {
-                    string importance = importanceValue.ToString(); // Convert it to string
+                    string importance = importanceValue.ToString(); 
 
-                    // Set the row color based on the Importance level
                     if (importance == "Low")
                     {
                         AlltasksTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#dcdcdc");  // Hex for Grey
@@ -256,13 +254,13 @@ namespace TaskSchudler
                     }
                     else
                     {
-                        AlltasksTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.White;  // Default color if no match
+                        AlltasksTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.White; 
                     }
                 }
                 else
                 {
-                    // Handle null values gracefully by setting a default background color or any other action
-                    AlltasksTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Gray;  // Set a neutral color if null
+                   
+                    AlltasksTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Gray;  
                 }
             }
         }
@@ -277,10 +275,10 @@ namespace TaskSchudler
 
             try
             {
-                // Get the selected row
+                
                 DataGridViewRow selectedRow = AlltasksTable.SelectedRows[0];
 
-                // Ensure TaskId is valid
+                
                 if (selectedRow.Cells["TaskId"].Value == null)
                 {
                     MessageBox.Show("Invalid task selection.");
@@ -289,7 +287,7 @@ namespace TaskSchudler
 
                 int taskId = Convert.ToInt32(selectedRow.Cells["TaskId"].Value);
 
-                // Confirm deletion
+                
                 DialogResult result = MessageBox.Show("Are you sure you want to delete this task?",
                                                       "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (result == DialogResult.No)
@@ -297,22 +295,22 @@ namespace TaskSchudler
                     return;
                 }
 
-                // Delete query
+               
                 string query = "DELETE FROM Taskss WHERE TaskId = @TaskId";
 
-                // Add parameter
+               
                 var parameters = new Dictionary<string, object>
         {
             { "@TaskId", taskId }
         };
 
-                // Execute delete
+                
                 int rowsAffected = _con.SetData(query, parameters);
 
                 if (rowsAffected > 0)
                 {
                     MessageBox.Show("Task deleted successfully.");
-                    ShowTasks(); // Refresh DataGridView
+                    ShowTasks(); 
                 }
                 else
                 {

@@ -149,6 +149,8 @@
             // 
             // ProfileTable
             // 
+            this.ProfileTable.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
+            this.ProfileTable.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ProfileTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ProfileTable.Location = new System.Drawing.Point(57, 354);
             this.ProfileTable.Name = "ProfileTable";
