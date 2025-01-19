@@ -38,7 +38,6 @@
             this.rəddolburdangetbuttonu = new System.Windows.Forms.Label();
             this.RemindersTable = new System.Windows.Forms.DataGridView();
             this.Remindercountmassage = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
             this.RemindersPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RemindersTable)).BeginInit();
@@ -105,7 +104,6 @@
             // RemindersPanel
             // 
             this.RemindersPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(37)))), ((int)(((byte)(51)))));
-            this.RemindersPanel.Controls.Add(this.label2);
             this.RemindersPanel.Controls.Add(this.rəddolburdangetbuttonu);
             this.RemindersPanel.Controls.Add(this.RemindersTable);
             this.RemindersPanel.Controls.Add(this.Remindercountmassage);
@@ -136,6 +134,7 @@
             this.RemindersTable.RowTemplate.Height = 24;
             this.RemindersTable.Size = new System.Drawing.Size(788, 558);
             this.RemindersTable.TabIndex = 26;
+            this.RemindersTable.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.RemindersTable_CellFormatting);
             // 
             // Remindercountmassage
             // 
@@ -147,18 +146,6 @@
             this.Remindercountmassage.Size = new System.Drawing.Size(569, 37);
             this.Remindercountmassage.TabIndex = 25;
             this.Remindercountmassage.Text = "You have [count] reminders for today.";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.DarkGray;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(126, 272);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(592, 29);
-            this.label2.TabIndex = 29;
-            this.label2.Text = "Note:The DataGrid is for showing Reminders Table ";
             // 
             // Reminders
             // 
@@ -197,6 +184,5 @@
         private System.Windows.Forms.Label Remindercountmassage;
         private System.Windows.Forms.DataGridView RemindersTable;
         private System.Windows.Forms.Label rəddolburdangetbuttonu;
-        private System.Windows.Forms.Label label2;
     }
 }

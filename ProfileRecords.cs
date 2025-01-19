@@ -77,6 +77,33 @@ namespace TaskSchudler
 
                 return tasksTable;
             }
+
+
+            //reminders
+            public DataTable GetTodaysReminders()
+            {
+                DataTable remindersTable = new DataTable();
+                string query = @"
+       SELECT TaskTitle, DueDate, Importance, Status
+FROM Taskss
+WHERE CONVERT(DATE, ReminderDate) = CAST(GETDATE() AS DATE)
+";  // Only today's reminders
+
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@UserID", _userID);
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        remindersTable.Load(reader);
+                    }
+                }
+
+                return remindersTable;
+            }
+
         }
     }
 }

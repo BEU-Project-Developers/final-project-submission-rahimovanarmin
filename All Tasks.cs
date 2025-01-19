@@ -110,7 +110,7 @@ namespace TaskSchudler
 
         private void RemindersNav_Click(object sender, EventArgs e)
         {
-            Reminders Obj = new Reminders();
+            Reminders Obj = new Reminders(_currentUserId,connectionString);
             Obj.Show();
             this.Close();
         }
