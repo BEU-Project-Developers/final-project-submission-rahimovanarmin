@@ -53,7 +53,6 @@
     <Compile Include="All Tasks.Designer.cs">
       <DependentUpon>All Tasks.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataManager.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,6 +86,7 @@
     <Compile Include="Splash.Designer.cs">
       <DependentUpon>Splash.cs</DependentUpon>
     </Compile>
+    <Compile Include="TableApperance.cs" />
     <Compile Include="TaskRecords.cs" />
     <EmbeddedResource Include="All Tasks.resx">
       <DependentUpon>All Tasks.cs</DependentUpon>

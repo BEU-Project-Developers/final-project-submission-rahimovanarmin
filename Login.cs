@@ -63,11 +63,11 @@ namespace TaskSchudler
                 {
                     int userId = Convert.ToInt32(result.Rows[0]["UserId"]);
 
-                    // Pass the userId to All_Tasks form
+                    
                     All_Tasks tasksPage = new All_Tasks(userId);
                     tasksPage.Show();
 
-                    // Close the login form
+                   
                     this.Close();
                 }
                 else

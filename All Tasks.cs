@@ -16,8 +16,7 @@ namespace TaskSchudler
     public partial class All_Tasks : Form
     {
         private readonly TaskRecords _con;
-        private readonly int _currentUserId; 
-        private readonly string connectionString = @"Data Source=DESKTOP-LIJ1K35\SQLEXPRESS;Initial Catalog=TaskScheduler;Integrated Security=True";
+        private readonly int _currentUserId;
 
         public All_Tasks(int userId)
         {
@@ -30,7 +29,7 @@ namespace TaskSchudler
         {
             foreach (DataGridViewColumn column in AlltasksTable.Columns)
             {
-                if (column.Name == "TaskId") 
+                if (column.Name == "TaskId")
                 {
                     column.ReadOnly = true;
                 }
@@ -43,32 +42,27 @@ namespace TaskSchudler
 
         private void ShowTasks()
         {
-           
-            
-                try
-                {
-                string query = "SELECT * FROM Taskss ORDER BY CASE WHEN Status = 'Completed' THEN 1 ELSE 0 END, DueDate";
-                DataTable dt = _con.GetData(query);
-                    AlltasksTable.DataSource = dt;
+            try
+            {
+                DataTable dt = _con.GetAllTasks(_currentUserId);
+                AlltasksTable.DataSource = dt;
 
-                    // Hide columns manually
-                    AlltasksTable.Columns["TaskId"].Visible = false;
-                    AlltasksTable.Columns["UserId"].Visible = false;
+                // Hide certain columns
+                AlltasksTable.Columns["TaskId"].Visible = false;
+                AlltasksTable.Columns["UserId"].Visible = false;
+
+                // Style the DataGridView
                 AlltasksTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                AlltasksTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
                 AlltasksTable.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-
-
+                AlltasksTable.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+                AlltasksTable.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 14, FontStyle.Bold);
             }
-
             catch (Exception ex)
-                {
-                    MessageBox.Show($"Error loading tasks: {ex.Message}");
-                }
-            
-
+            {
+                MessageBox.Show($"Error loading tasks: {ex.Message}");
+            }
         }
+
 
         private void AddButton_Click(object sender, EventArgs e)
         {
@@ -80,28 +74,78 @@ namespace TaskSchudler
 
             try
             {
-                var parameters = new Dictionary<string, object>
-            {
-                { "@TaskTitle", taskTitleInput.Text },
-                { "@ReminderDate", RemiderDateInput.Value },
-                { "@DueDate", DueDateInput.Value },
-                { "@Status", StatusCombo.SelectedItem.ToString() },
-                { "@Importance", ImportanceCombo.SelectedItem.ToString() },
-                { "@UserId", _currentUserId }
-            };
+                string title = taskTitleInput.Text;
+                DateTime reminderDate = RemiderDateInput.Value;
+                DateTime dueDate = DueDateInput.Value;
+                string status = StatusCombo.SelectedItem?.ToString();
+                string importance = ImportanceCombo.SelectedItem?.ToString();
 
-                string query = "INSERT INTO Taskss (TaskTitle, ReminderDate, DueDate, Status, Importance, UserId) " +
-                               "VALUES (@TaskTitle, @ReminderDate, @DueDate, @Status, @Importance, @UserId)";
-                _con.SetData(query, parameters);
+                if (string.IsNullOrWhiteSpace(status) || string.IsNullOrWhiteSpace(importance))
+                {
+                    MessageBox.Show("Please fill in all fields.");
+                    return;
+                }
 
-                MessageBox.Show("Task added!");
-                ShowTasks();
+                int rowsAffected = _con.AddTask(title, reminderDate, dueDate, status, importance, _currentUserId);
+
+                if (rowsAffected > 0)
+                {
+                    MessageBox.Show("Task added!");
+                    ShowTasks();
+                }
+                else
+                {
+                    MessageBox.Show("Failed to add task.");
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error: {ex.Message}");
             }
         }
+        private void Edit_Click(object sender, EventArgs e)
+        {
+            if (AlltasksTable.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a task to update.");
+                return;
+            }
+
+            try
+            {
+                DataGridViewRow selectedRow = AlltasksTable.SelectedRows[0];
+                int taskId = Convert.ToInt32(selectedRow.Cells["TaskId"].Value);
+
+                string title = taskTitleInput.Text.Trim();
+                DateTime reminderDate = RemiderDateInput.Value;
+                DateTime dueDate = DueDateInput.Value;
+                string status = StatusCombo.SelectedItem?.ToString() ?? "";
+                string importance = ImportanceCombo.SelectedItem?.ToString() ?? "";
+
+                if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(status) || string.IsNullOrWhiteSpace(importance))
+                {
+                    MessageBox.Show("Please fill in all fields.");
+                    return;
+                }
+
+                int rowsAffected = _con.UpdateTask(taskId, title, reminderDate, dueDate, status, importance);
+
+                if (rowsAffected > 0)
+                {
+                    MessageBox.Show("Task updated successfully.");
+                    ShowTasks();
+                }
+                else
+                {
+                    MessageBox.Show("Update failed. No rows affected.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
+        }
+
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -109,15 +153,17 @@ namespace TaskSchudler
 
         private void RemindersNav_Click(object sender, EventArgs e)
         {
-            Reminders Obj = new Reminders(_currentUserId,connectionString);
-            Obj.Show();
+            string connectionString = _con.ConnectionString;
+            Reminders remindersForm = new Reminders(_currentUserId, connectionString);
+            remindersForm.Show();
             this.Close();
         }
 
         private void ProfileNav_Click(object sender, EventArgs e)
         {
-            Profile Object = new Profile(_currentUserId,connectionString);
-            Object.Show();
+            string connectionString = _con.ConnectionString;
+            Profile profileForm = new Profile(_currentUserId, connectionString);
+            profileForm.Show();
             this.Close();
         }
 
@@ -126,98 +172,24 @@ namespace TaskSchudler
             this.Close();
         }
 
-       
 
-        
+
+
 
         private void AllTasksPanel_Paint(object sender, PaintEventArgs e)
         {
 
         }
 
-         private void Edit_Click(object sender, EventArgs e)
-            {
-                if (AlltasksTable.SelectedRows.Count == 0)
-                {
-                    MessageBox.Show("Please select a task to update.");
-                    return;
-                }
 
-                try
-                {
-                  
-                    DataGridViewRow selectedRow = AlltasksTable.SelectedRows[0];
-
-                    // Ensure TaskId is not null
-                    if (selectedRow.Cells["TaskId"].Value == null)
-                    {
-                        MessageBox.Show("Invalid task selection.");
-                        return;
-                    }
-
-                    // Get the task details from the UI
-                    int taskId = Convert.ToInt32(selectedRow.Cells["TaskId"].Value);
-                    string title = taskTitleInput.Text.Trim();
-                    DateTime reminderDate = RemiderDateInput.Value;
-                    DateTime dueDate = DueDateInput.Value;
-                    string status = StatusCombo.SelectedItem?.ToString() ?? "";
-                    string importance = ImportanceCombo.SelectedItem?.ToString() ?? "";
-
-                    // required fields are filled
-                    if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(status) || string.IsNullOrWhiteSpace(importance))
-                    {
-                        MessageBox.Show("Please fill in all fields.");
-                        return;
-                    }
-
-                    // Update query
-                    string query = "UPDATE Taskss " +
-                                    "SET TaskTitle = @TaskTitle, ReminderDate = @ReminderDate, DueDate = @DueDate, " +
-                                    "Status = @Status, Importance = @Importance " +
-                                    "WHERE TaskId = @TaskId";
-
-                    // Add parameters
-                    var parameters = new Dictionary<string, object>
-        {
-            { "@TaskTitle", title },
-            { "@ReminderDate", reminderDate },
-            { "@DueDate", dueDate },
-            { "@Status", status },
-            { "@Importance", importance },
-            { "@TaskId", taskId }
-        };
-
-                    // Execute update
-                    int rowsAffected = _con.SetData(query, parameters);
-
-                    if (rowsAffected > 0)
-                    {
-                        MessageBox.Show("Task updated successfully.");
-                        ShowTasks(); // Refresh DataGridView
-                    }
-                    else
-                    {
-                        MessageBox.Show("Update failed. No rows affected.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-
-    
 
 
         private void AlltasksTable_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            
             if (e.RowIndex >= 0)
             {
-               
                 DataGridViewRow selectedRow = AlltasksTable.Rows[e.RowIndex];
 
-               
                 taskTitleInput.Text = selectedRow.Cells["TaskTitle"].Value.ToString();
                 RemiderDateInput.Value = Convert.ToDateTime(selectedRow.Cells["ReminderDate"].Value);
                 DueDateInput.Value = Convert.ToDateTime(selectedRow.Cells["DueDate"].Value);
@@ -226,43 +198,10 @@ namespace TaskSchudler
             }
         }
 
+
         private void AlltasksTable_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            AlltasksTable.DefaultCellStyle.Font = new Font("Century Gothic", 12);
-            AlltasksTable.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 14, FontStyle.Bold);
-            if (AlltasksTable.Columns[e.ColumnIndex].Name == "Importance" && e.RowIndex >= 0)
-
-            {
-                // Ensure the value in the cell is not null
-                var importanceValue = AlltasksTable.Rows[e.RowIndex].Cells["Importance"].Value;
-
-                if (importanceValue != null)
-                {
-                    string importance = importanceValue.ToString(); 
-
-                    if (importance == "Low")
-                    {
-                        AlltasksTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#dcdcdc");  // Hex for Grey
-                    }
-                    else if (importance == "Medium")
-                    {
-                        AlltasksTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#CA9C47");  
-                    }
-                    else if (importance == "High")
-                    {
-                        AlltasksTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#CB4752"); 
-                    }
-                    else
-                    {
-                        AlltasksTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.White; 
-                    }
-                }
-                else
-                {
-                   
-                    AlltasksTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Gray;  
-                }
-            }
+            TableApperance.ApplyCellFormatting(AlltasksTable, e);
         }
 
         private void DeleteButton_Click(object sender, EventArgs e)
@@ -275,19 +214,9 @@ namespace TaskSchudler
 
             try
             {
-                
                 DataGridViewRow selectedRow = AlltasksTable.SelectedRows[0];
-
-                
-                if (selectedRow.Cells["TaskId"].Value == null)
-                {
-                    MessageBox.Show("Invalid task selection.");
-                    return;
-                }
-
                 int taskId = Convert.ToInt32(selectedRow.Cells["TaskId"].Value);
 
-                
                 DialogResult result = MessageBox.Show("Are you sure you want to delete this task?",
                                                       "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (result == DialogResult.No)
@@ -295,22 +224,12 @@ namespace TaskSchudler
                     return;
                 }
 
-               
-                string query = "DELETE FROM Taskss WHERE TaskId = @TaskId";
-
-               
-                var parameters = new Dictionary<string, object>
-        {
-            { "@TaskId", taskId }
-        };
-
-                
-                int rowsAffected = _con.SetData(query, parameters);
+                int rowsAffected = _con.DeleteTask(taskId);
 
                 if (rowsAffected > 0)
                 {
                     MessageBox.Show("Task deleted successfully.");
-                    ShowTasks(); 
+                    ShowTasks();
                 }
                 else
                 {
@@ -325,7 +244,7 @@ namespace TaskSchudler
 
         private void All_Tasks_Load(object sender, EventArgs e)
         {
-
+            ShowTasks();
         }
     }
 }

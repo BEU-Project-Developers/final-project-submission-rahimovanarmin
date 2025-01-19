@@ -13,14 +13,14 @@ namespace TaskSchudler
 {
     public partial class Reminders : Form
     {
-        private int _userID;
-        private string _connectionString;
+        private readonly string _connectionString;
+        private readonly int _currentUserId;
         private ProfileRecords profileRecords;
 
         public Reminders(int userID, string connectionString)
         {
             InitializeComponent();
-            _userID = userID;
+            _currentUserId = userID;
             _connectionString = connectionString;
 
             
@@ -57,7 +57,7 @@ namespace TaskSchudler
         private void ProfileNav_Click(object sender, EventArgs e)
         {
            
-                Profile Object = new Profile(_userID,_connectionString);
+                Profile Object = new Profile(_currentUserId,_connectionString);
                 Object.Show();
                 this.Close();
             
@@ -71,7 +71,7 @@ namespace TaskSchudler
 
         private void AllTasksNav_Click(object sender, EventArgs e)
         {
-           All_Tasks Obj = new All_Tasks(_userID);
+           All_Tasks Obj = new All_Tasks(_currentUserId);
             Obj.Show();
             this.Close();
         }
@@ -101,42 +101,7 @@ namespace TaskSchudler
         private void RemindersTable_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
 
-            RemindersTable.DefaultCellStyle.Font = new Font("Century Gothic", 12);
-            RemindersTable.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 14, FontStyle.Bold);
-            if (RemindersTable.Columns[e.ColumnIndex].Name == "Importance" && e.RowIndex >= 0)
-
-            {
-                // Ensure the value in the cell is not null
-                var importanceValue = RemindersTable.Rows[e.RowIndex].Cells["Importance"].Value;
-
-                if (importanceValue != null)
-                {
-                    string importance = importanceValue.ToString(); 
-
-                    // Set the row color based on the Importance level
-                    if (importance == "Low")
-                    {
-                        RemindersTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#dcdcdc");  // Hex for Grey
-                    }
-                    else if (importance == "Medium")
-                    {
-                        RemindersTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#CA9C47");
-                    }
-                    else if (importance == "High")
-                    {
-                        RemindersTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#CB4752");
-                    }
-                    else
-                    {
-                        RemindersTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.White;  // Default color if no match
-                    }
-                }
-                else
-                {
-                    
-                    RemindersTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Gray;  // Set a neutral color if null
-                }
-            }
+            TableApperance.ApplyCellFormatting(RemindersTable, e);
         }
     }
 }

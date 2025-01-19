@@ -117,42 +117,7 @@ namespace TaskSchudler
 
         private void ProfileTable_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            ProfileTable.DefaultCellStyle.Font = new Font("Century Gothic", 12);
-            ProfileTable.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 14, FontStyle.Bold);
-            if (ProfileTable.Columns[e.ColumnIndex].Name == "Importance" && e.RowIndex >= 0)
-
-            {
-                // Ensure the value in the cell is not null
-                var importanceValue = ProfileTable.Rows[e.RowIndex].Cells["Importance"].Value;
-
-                if (importanceValue != null)
-                {
-                    string importance = importanceValue.ToString(); // Convert it to string
-
-                    // Set the row color based on the Importance level
-                    if (importance == "Low")
-                    {
-                        ProfileTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#dcdcdc");  // Hex for Grey
-                    }
-                    else if (importance == "Medium")
-                    {
-                        ProfileTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#CA9C47");
-                    }
-                    else if (importance == "High")
-                    {
-                        ProfileTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#CB4752");
-                    }
-                    else
-                    {
-                        ProfileTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.White;  // Default color if no match
-                    }
-                }
-                else
-                {
-                    // Handle null values gracefully by setting a default background color or any other action
-                    ProfileTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Gray;  // Set a neutral color if null
-                }
-            }
+            TableApperance.ApplyCellFormatting(ProfileTable, e);
         }
     }
 }
