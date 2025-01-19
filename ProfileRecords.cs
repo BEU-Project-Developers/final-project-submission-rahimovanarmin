@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -7,49 +8,75 @@ using System.Threading.Tasks;
 
 namespace TaskSchudler
 {
-    public class ProfileRecords
+    namespace TaskSchudler
     {
-        private string _connectionString;
-        private int _userID;
-
-        public ProfileRecords(string connectionString, int userID)
+        public class ProfileRecords
         {
-            _connectionString = connectionString;
-            _userID = userID;
-        }
+            private string _connectionString;
+            private int _userID;
 
-        public int GetCompletedTaskCount(int userID)
-        {
-            int completedCount = 0;
-            // SQL query to get completed tasks count
-            string query = "SELECT COUNT(*) FROM Taskss WHERE UserID = @UserID AND Status = 'Completed'"; // Adjust to your schema
-
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            public ProfileRecords(string connectionString, int userID)
             {
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@UserID", userID);
-                connection.Open();
-                completedCount = (int)command.ExecuteScalar();
+                _connectionString = connectionString;
+                _userID = userID;
             }
 
-            return completedCount;
-        }
-
-        public int GetIncompleteTaskCount(int userID)
-        {
-            int incompleteCount = 0;
-            // SQL query to get incomplete tasks count
-            string query = "SELECT COUNT(*) FROM Taskss WHERE UserID = @UserID AND Status = 'Incomplete'"; // Adjust to your schema
-
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            public int GetCompletedTaskCount(int _userID)
             {
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@UserID", userID);
-                connection.Open();
-                incompleteCount = (int)command.ExecuteScalar();
+                int completedCount = 0;
+                string query = "SELECT COUNT(*) FROM Taskss WHERE UserID = @UserID AND Status = 'Completed'";
+
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@UserID", _userID);
+                    connection.Open();
+                    completedCount = (int)command.ExecuteScalar();
+                }
+
+                return completedCount;
             }
 
-            return incompleteCount;
+            public int GetIncompleteTaskCount(int _userID)
+            {
+                int incompleteCount = 0;
+                string query = "SELECT COUNT(*) FROM Taskss WHERE UserID = @UserID AND Status = 'Incompleted'";
+
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@UserID", _userID);
+                    connection.Open();
+                    incompleteCount = (int)command.ExecuteScalar();
+                }
+
+                return incompleteCount;
+            }
+
+            public DataTable GetIncompleteTasks()
+            {
+                DataTable tasksTable = new DataTable();
+                string query = @"
+                SELECT TaskTitle, ReminderDate, DueDate, Importance
+                FROM Taskss
+                 WHERE UserID = @UserID 
+                 AND Status = 'Incompleted'
+                 AND DueDate BETWEEN GETDATE() AND DATEADD(DAY, 7, GETDATE())";
+
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@UserID", _userID);
+                    connection.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        tasksTable.Load(reader);
+                    }
+                }
+
+                return tasksTable;
+            }
         }
     }
 }

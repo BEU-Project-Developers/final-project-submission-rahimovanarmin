@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TaskSchudler.TaskSchudler;
 
 namespace TaskSchudler
 {
@@ -41,7 +42,21 @@ namespace TaskSchudler
             Countofcompleted.Location = new Point((CompletedPanel.ClientSize.Width - Countofcompleted.Width) / 2, Countofcompleted.Location.Y);
             CountofIncompleted.Location = new Point((IncompletedPanel.ClientSize.Width - CountofIncompleted.Width) / 2, CountofIncompleted.Location.Y);
         }
+        private void LoadIncompleteTasks()
+        {
+            DataTable tasksTable = profileRecords.GetIncompleteTasks();
 
+            // Bind the DataTable to the DataGridView
+            ProfileTable.DataSource = tasksTable;
+
+            // Format the DataGridView
+            ProfileTable.Columns["TaskTitle"].HeaderText = "Task Title";
+            ProfileTable.Columns["ReminderDate"].HeaderText = "Reminder Date";
+            ProfileTable.Columns["DueDate"].HeaderText = "Due Date";
+            ProfileTable.Columns["Importance"].HeaderText = "Importance";
+
+            ProfileTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
 
         private void RemindersPanel_Paint(object sender, PaintEventArgs e)
         {
@@ -92,11 +107,52 @@ namespace TaskSchudler
         private void Profile_Load(object sender, EventArgs e)
         {
             UpdateTaskCounts();
+            LoadIncompleteTasks();
         }
 
         private void Countofcompleted_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void ProfileTable_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            ProfileTable.DefaultCellStyle.Font = new Font("Century Gothic", 12);
+            ProfileTable.ColumnHeadersDefaultCellStyle.Font = new Font("Century Gothic", 14, FontStyle.Bold);
+            if (ProfileTable.Columns[e.ColumnIndex].Name == "Importance" && e.RowIndex >= 0)
+
+            {
+                // Ensure the value in the cell is not null
+                var importanceValue = ProfileTable.Rows[e.RowIndex].Cells["Importance"].Value;
+
+                if (importanceValue != null)
+                {
+                    string importance = importanceValue.ToString(); // Convert it to string
+
+                    // Set the row color based on the Importance level
+                    if (importance == "Low")
+                    {
+                        ProfileTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#dcdcdc");  // Hex for Grey
+                    }
+                    else if (importance == "Medium")
+                    {
+                        ProfileTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#CA9C47");
+                    }
+                    else if (importance == "High")
+                    {
+                        ProfileTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = ColorTranslator.FromHtml("#CB4752");
+                    }
+                    else
+                    {
+                        ProfileTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.White;  // Default color if no match
+                    }
+                }
+                else
+                {
+                    // Handle null values gracefully by setting a default background color or any other action
+                    ProfileTable.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Gray;  // Set a neutral color if null
+                }
+            }
         }
     }
 }

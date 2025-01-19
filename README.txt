@@ -1,1 +1,1 @@
-﻿In this version I adjusted counts in Profile form, and added ProfileRecords class for functionality
+﻿In this version I added functionality to Next 7 days table in Profile page
