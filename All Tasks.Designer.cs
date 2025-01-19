@@ -334,6 +334,7 @@
             this.Name = "All_Tasks";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "All_Tasks";
+            this.Load += new System.EventHandler(this.All_Tasks_Load);
             this.AllTasksPanel.ResumeLayout(false);
             this.AllTasksPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AlltasksTable)).EndInit();

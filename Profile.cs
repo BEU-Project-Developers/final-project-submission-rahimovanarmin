@@ -12,10 +12,36 @@ namespace TaskSchudler
 {
     public partial class Profile : Form
     {
-        public Profile()
+        private int _userID;
+        private string _connectionString;
+        private ProfileRecords profileRecords;
+
+        // Constructor expects userID and connectionString
+        public Profile(int userID, string connectionString)
         {
             InitializeComponent();
+            _userID = userID;
+            _connectionString = connectionString;
+
+            // Initialize ProfileRecords
+            profileRecords = new ProfileRecords(connectionString, userID);
         }
+
+        private void UpdateTaskCounts()
+        {
+            int completedCount = profileRecords.GetCompletedTaskCount(_userID);
+            int incompletedCount = profileRecords.GetIncompleteTaskCount(_userID);
+
+            Countofcompleted.Text = $"{completedCount}";
+            CountofIncompleted.Text = $"{incompletedCount}";
+            Countofcompleted.TextAlign = ContentAlignment.MiddleCenter;
+            CountofIncompleted.TextAlign = ContentAlignment.MiddleCenter;
+
+            // Center the labels horizontally within the panel
+            Countofcompleted.Location = new Point((CompletedPanel.ClientSize.Width - Countofcompleted.Width) / 2, Countofcompleted.Location.Y);
+            CountofIncompleted.Location = new Point((IncompletedPanel.ClientSize.Width - CountofIncompleted.Width) / 2, CountofIncompleted.Location.Y);
+        }
+
 
         private void RemindersPanel_Paint(object sender, PaintEventArgs e)
         {
@@ -33,9 +59,9 @@ namespace TaskSchudler
         private void AllTasksNav_Click(object sender, EventArgs e)
         {
 
-            //All_Tasks Obj = new All_Tasks();
-            //Obj.Show();
-            //this.Close();
+            All_Tasks Obj = new All_Tasks(_userID);
+            Obj.Show();
+            this.Close();
         }
 
         private void Logo_Click(object sender, EventArgs e)
@@ -59,6 +85,16 @@ namespace TaskSchudler
         }
 
         private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Profile_Load(object sender, EventArgs e)
+        {
+            UpdateTaskCounts();
+        }
+
+        private void Countofcompleted_Click(object sender, EventArgs e)
         {
 
         }

@@ -35,21 +35,21 @@
             this.Logo = new System.Windows.Forms.PictureBox();
             this.Logolabel = new System.Windows.Forms.Label();
             this.ProfilePanel = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
             this.EscapeButtonu = new System.Windows.Forms.Label();
             this.Next7daystasks = new System.Windows.Forms.Label();
             this.ProfileTable = new System.Windows.Forms.DataGridView();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.IncompletedPanel = new System.Windows.Forms.Panel();
+            this.CountofIncompleted = new System.Windows.Forms.Label();
             this.UncompletedTasks = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.CompletedPanel = new System.Windows.Forms.Panel();
             this.Countofcompleted = new System.Windows.Forms.Label();
             this.CompletedTasks = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
             this.ProfilePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ProfileTable)).BeginInit();
-            this.panel3.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.IncompletedPanel.SuspendLayout();
+            this.CompletedPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // ProfileNav
@@ -118,13 +118,26 @@
             this.ProfilePanel.Controls.Add(this.EscapeButtonu);
             this.ProfilePanel.Controls.Add(this.Next7daystasks);
             this.ProfilePanel.Controls.Add(this.ProfileTable);
-            this.ProfilePanel.Controls.Add(this.panel3);
-            this.ProfilePanel.Controls.Add(this.panel2);
+            this.ProfilePanel.Controls.Add(this.IncompletedPanel);
+            this.ProfilePanel.Controls.Add(this.CompletedPanel);
             this.ProfilePanel.Location = new System.Drawing.Point(260, 0);
             this.ProfilePanel.Name = "ProfilePanel";
             this.ProfilePanel.Size = new System.Drawing.Size(851, 714);
             this.ProfilePanel.TabIndex = 18;
             this.ProfilePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.RemindersPanel_Paint);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.DarkGray;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(155, 412);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(508, 25);
+            this.label2.TabIndex = 28;
+            this.label2.Text = "Note:The DataGrid is for showing Tasks for 7 days Table ";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // EscapeButtonu
             // 
@@ -159,27 +172,27 @@
             this.ProfileTable.Size = new System.Drawing.Size(725, 357);
             this.ProfileTable.TabIndex = 3;
             // 
-            // panel3
+            // IncompletedPanel
             // 
-            this.panel3.BackColor = System.Drawing.Color.White;
-            this.panel3.Controls.Add(this.label1);
-            this.panel3.Controls.Add(this.UncompletedTasks);
-            this.panel3.ForeColor = System.Drawing.Color.Coral;
-            this.panel3.Location = new System.Drawing.Point(465, 113);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(317, 172);
-            this.panel3.TabIndex = 2;
+            this.IncompletedPanel.BackColor = System.Drawing.Color.White;
+            this.IncompletedPanel.Controls.Add(this.CountofIncompleted);
+            this.IncompletedPanel.Controls.Add(this.UncompletedTasks);
+            this.IncompletedPanel.ForeColor = System.Drawing.Color.Coral;
+            this.IncompletedPanel.Location = new System.Drawing.Point(465, 113);
+            this.IncompletedPanel.Name = "IncompletedPanel";
+            this.IncompletedPanel.Size = new System.Drawing.Size(317, 172);
+            this.IncompletedPanel.TabIndex = 2;
             // 
-            // label1
+            // CountofIncompleted
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Century Gothic", 20F);
-            this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(89, 86);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(144, 40);
-            this.label1.TabIndex = 26;
-            this.label1.Text = "[Count]";
+            this.CountofIncompleted.AutoSize = true;
+            this.CountofIncompleted.Font = new System.Drawing.Font("Century Gothic", 20F);
+            this.CountofIncompleted.ForeColor = System.Drawing.Color.Black;
+            this.CountofIncompleted.Location = new System.Drawing.Point(89, 86);
+            this.CountofIncompleted.Name = "CountofIncompleted";
+            this.CountofIncompleted.Size = new System.Drawing.Size(144, 40);
+            this.CountofIncompleted.TabIndex = 26;
+            this.CountofIncompleted.Text = "[Count]";
             // 
             // UncompletedTasks
             // 
@@ -192,27 +205,31 @@
             this.UncompletedTasks.TabIndex = 25;
             this.UncompletedTasks.Text = "Unompleted tasks:";
             // 
-            // panel2
+            // CompletedPanel
             // 
-            this.panel2.BackColor = System.Drawing.Color.White;
-            this.panel2.Controls.Add(this.Countofcompleted);
-            this.panel2.Controls.Add(this.CompletedTasks);
-            this.panel2.ForeColor = System.Drawing.Color.Coral;
-            this.panel2.Location = new System.Drawing.Point(63, 113);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(317, 172);
-            this.panel2.TabIndex = 1;
+            this.CompletedPanel.BackColor = System.Drawing.Color.White;
+            this.CompletedPanel.Controls.Add(this.Countofcompleted);
+            this.CompletedPanel.Controls.Add(this.CompletedTasks);
+            this.CompletedPanel.ForeColor = System.Drawing.Color.Coral;
+            this.CompletedPanel.Location = new System.Drawing.Point(63, 113);
+            this.CompletedPanel.Name = "CompletedPanel";
+            this.CompletedPanel.Size = new System.Drawing.Size(317, 172);
+            this.CompletedPanel.TabIndex = 1;
             // 
             // Countofcompleted
             // 
+            this.Countofcompleted.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Countofcompleted.AutoSize = true;
-            this.Countofcompleted.Font = new System.Drawing.Font("Century Gothic", 20F);
+            this.Countofcompleted.Font = new System.Drawing.Font("Century Gothic", 30F);
             this.Countofcompleted.ForeColor = System.Drawing.Color.Black;
-            this.Countofcompleted.Location = new System.Drawing.Point(90, 86);
+            this.Countofcompleted.Location = new System.Drawing.Point(122, 74);
             this.Countofcompleted.Name = "Countofcompleted";
-            this.Countofcompleted.Size = new System.Drawing.Size(144, 40);
+            this.Countofcompleted.Size = new System.Drawing.Size(83, 61);
             this.Countofcompleted.TabIndex = 25;
-            this.Countofcompleted.Text = "[Count]";
+            this.Countofcompleted.Text = "14";
+            this.Countofcompleted.Click += new System.EventHandler(this.Countofcompleted_Click);
             // 
             // CompletedTasks
             // 
@@ -224,19 +241,6 @@
             this.CompletedTasks.Size = new System.Drawing.Size(221, 30);
             this.CompletedTasks.TabIndex = 24;
             this.CompletedTasks.Text = "Completed tasks:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.Color.DarkGray;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(155, 412);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(508, 25);
-            this.label2.TabIndex = 28;
-            this.label2.Text = "Note:The DataGrid is for showing Tasks for 7 days Table ";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // Profile
             // 
@@ -254,14 +258,15 @@
             this.Name = "Profile";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Profile";
+            this.Load += new System.EventHandler(this.Profile_Load);
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).EndInit();
             this.ProfilePanel.ResumeLayout(false);
             this.ProfilePanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ProfileTable)).EndInit();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.IncompletedPanel.ResumeLayout(false);
+            this.IncompletedPanel.PerformLayout();
+            this.CompletedPanel.ResumeLayout(false);
+            this.CompletedPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -277,10 +282,10 @@
         private System.Windows.Forms.Panel ProfilePanel;
         private System.Windows.Forms.Label Next7daystasks;
         private System.Windows.Forms.DataGridView ProfileTable;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel IncompletedPanel;
+        private System.Windows.Forms.Label CountofIncompleted;
         private System.Windows.Forms.Label UncompletedTasks;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel CompletedPanel;
         private System.Windows.Forms.Label Countofcompleted;
         private System.Windows.Forms.Label CompletedTasks;
         private System.Windows.Forms.Label EscapeButtonu;

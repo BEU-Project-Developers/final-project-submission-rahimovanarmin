@@ -17,6 +17,7 @@ namespace TaskSchudler
     {
         private readonly TaskRecords _con;
         private readonly int _currentUserId; // Assume this is set during user login.
+        private readonly string connectionString = @"Data Source=DESKTOP-LIJ1K35\SQLEXPRESS;Initial Catalog=TaskScheduler;Integrated Security=True";
 
         public All_Tasks(int userId)
         {
@@ -116,7 +117,7 @@ namespace TaskSchudler
 
         private void ProfileNav_Click(object sender, EventArgs e)
         {
-            Profile Object = new Profile();
+            Profile Object = new Profile(_currentUserId,connectionString);
             Object.Show();
             this.Close();
         }
@@ -322,6 +323,11 @@ namespace TaskSchudler
             {
                 MessageBox.Show($"Error: {ex.Message}");
             }
+        }
+
+        private void All_Tasks_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

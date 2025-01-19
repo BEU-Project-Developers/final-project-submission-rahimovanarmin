@@ -20,9 +20,9 @@ namespace TaskSchudler
         private void ProfileNav_Click(object sender, EventArgs e)
         {
            
-                Profile Object = new Profile();
-                Object.Show();
-                this.Close();
+                //Profile Object = new Profile();
+                //Object.Show();
+                //this.Close();
             
 
         }
