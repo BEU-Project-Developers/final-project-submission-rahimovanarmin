@@ -74,6 +74,7 @@
     <Compile Include="Reminders.Designer.cs">
       <DependentUpon>Reminders.cs</DependentUpon>
     </Compile>
+    <Compile Include="SecurityHelper.cs" />
     <Compile Include="SignUP.cs">
       <SubType>Form</SubType>
     </Compile>

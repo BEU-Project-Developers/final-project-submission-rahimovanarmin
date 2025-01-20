@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace TaskSchudler
@@ -20,6 +21,17 @@ namespace TaskSchudler
             loginForm.Show();
             this.Hide(); 
         }
+        private bool IsPasswordStrong(string password)
+        {
+            if (password.Length < 8) return false; // Minimum length requirement
+            if (!password.Any(char.IsUpper)) return false; // At least one uppercase letter
+            if (!password.Any(char.IsLower)) return false; // At least one lowercase letter
+            if (!password.Any(char.IsDigit)) return false; // At least one digit
+            if (!password.Any(ch => "!@#$%^&*()_+-=[]{}|;:'\",.<>?/".Contains(ch))) return false; // At least one special character
+
+            return true;
+        }
+
 
         private void SignUpButton_Click_1(object sender, EventArgs e)
         {
@@ -39,6 +51,12 @@ namespace TaskSchudler
                 return;
             }
 
+            if (!IsPasswordStrong(password))
+            {
+                MessageBox.Show("Password must be at least 8 characters long and include uppercase, lowercase, a number, and a special character.");
+                return;
+            }
+
             try
             {
                 TaskRecords db = new TaskRecords();
@@ -46,9 +64,9 @@ namespace TaskSchudler
                 // Check if email already exists
                 string checkQuery = "SELECT COUNT(*) FROM Userss WHERE Email = @Email";
                 var checkParams = new Dictionary<string, object>
-                {
-                    { "@Email", email }
-                };
+        {
+            { "@Email", email }
+        };
 
                 DataTable result = db.GetData(checkQuery, checkParams);
                 int emailCount = Convert.ToInt32(result.Rows[0][0]);
@@ -59,13 +77,16 @@ namespace TaskSchudler
                     return;
                 }
 
-          
+                // Hash the password before storing it
+                string hashedPassword = SecurityHelper.HashPassword(password);
+
+                // Insert the user data with the hashed password
                 string insertQuery = "INSERT INTO Userss (Email, Password) VALUES (@Email, @Password)";
                 var insertParams = new Dictionary<string, object>
-                {
-                    { "@Email", email },
-                    { "@Password", password }
-                };
+        {
+            { "@Email", email },
+            { "@Password", hashedPassword }
+        };
 
                 int rowsAffected = db.SetData(insertQuery, insertParams);
 
@@ -74,7 +95,7 @@ namespace TaskSchudler
                     MessageBox.Show("Signup successful! Redirecting to login...");
                     Login loginForm = new Login();
                     loginForm.Show();
-                    this.Hide(); 
+                    this.Hide();
                 }
                 else
                 {
@@ -86,6 +107,7 @@ namespace TaskSchudler
                 MessageBox.Show($"Error: {ex.Message}");
             }
         }
+
 
         private void EscapeButton_Click(object sender, EventArgs e)
         {

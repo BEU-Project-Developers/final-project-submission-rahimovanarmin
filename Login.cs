@@ -34,11 +34,21 @@ namespace TaskSchudler
         {
 
         }
+        private bool IsPasswordStrong(string password)
+        {
+            if (password.Length < 8) return false; // Minimum length requirement
+            if (!password.Any(char.IsUpper)) return false; // At least one uppercase letter
+            if (!password.Any(char.IsLower)) return false; // At least one lowercase letter
+            if (!password.Any(char.IsDigit)) return false; // At least one digit
+            if (!password.Any(ch => "!@#$%^&*()_+-=[]{}|;:'\",.<>?/".Contains(ch))) return false; // At least one special character
+
+            return true;
+        }
+
 
         private void Loginbutton_Click(object sender, EventArgs e)
         {
-
-            string email = EmailInput.Text; // Updated for email
+            string email = EmailInput.Text.Trim(); // Trim to remove leading/trailing spaces
             string password = PasswordInput.Text;
 
             if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
@@ -49,26 +59,44 @@ namespace TaskSchudler
 
             try
             {
-                TaskRecords db = new TaskRecords();
-                string query = "SELECT UserId FROM Userss WHERE Email = @Email AND Password = @Password";
+                // Hash the input password
+                string hashedInputPassword = SecurityHelper.HashPassword(password);
+                MessageBox.Show("Hashed Input Password: " + hashedInputPassword); // Debugging the input password hash
+
+                // Prepare the query to retrieve the stored hashed password
+                string query = "SELECT UserId, Password FROM Userss WHERE LOWER(Email) = LOWER(@Email)";
                 var parameters = new Dictionary<string, object>
         {
-            { "@Email", email },
-            { "@Password", password }
+            { "@Email", email }
         };
 
+                // Create a TaskRecords instance to execute the query
+                TaskRecords db = new TaskRecords();
                 DataTable result = db.GetData(query, parameters);
 
+                // Check if the user exists
                 if (result.Rows.Count == 1)
                 {
-                    int userId = Convert.ToInt32(result.Rows[0]["UserId"]);
+                    // Extract the stored hashed password from the database
+                    string storedHashedPassword = result.Rows[0]["Password"].ToString();
+                    //MessageBox.Show("Stored Hashed Password: " + storedHashedPassword); // Debugging the stored hash
 
-                    
-                    All_Tasks tasksPage = new All_Tasks(userId);
-                    tasksPage.Show();
+                    // Compare the hashes
+                    if (hashedInputPassword == storedHashedPassword)
+                    {
+                        int userId = Convert.ToInt32(result.Rows[0]["UserId"]);
 
-                   
-                    this.Close();
+                        // Login successful, open the next form
+                        All_Tasks tasksPage = new All_Tasks(userId);
+                        tasksPage.Show();
+
+                        // Close the current form
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid email or password.");
+                    }
                 }
                 else
                 {
@@ -79,8 +107,10 @@ namespace TaskSchudler
             {
                 MessageBox.Show($"Error: {ex.Message}");
             }
-
         }
+
+
+
 
         private void EscapeButton_Click(object sender, EventArgs e)
         {
